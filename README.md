@@ -4,11 +4,7 @@ Command line interface to [`wh-s3-branch-deploy`](https://github.com/risd/wh-s3-
 
 ### Install
 
-`npm install risd/rm-demploy`
-
-Or globally.
-
-`npm install risd/rm-deploy -g`.
+`npm install rm-deploy`
 
 ### Usage
 
@@ -18,7 +14,7 @@ Always run from the root of a WebHook project.
 
 Explicitly define options:
 
-`rm-deploy --aws=~/path/to/aws.json --prefix=MyProject`
+`rm-deploy --aws=path/to/aws.json --prefix=MyProject`
 
 View help:
 

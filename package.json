@@ -29,9 +29,6 @@
   "homepage": "https://github.com/risd/wh-s3-branch-deploy",
   "dependencies": {
     "minimist": "^1.1.1",
-    "wh-s3-branch-deploy": "risd/wh-s3-branch-deploy"
-  },
-  "peerDependencies": {
-    "wh": "^1.x"
+    "wh-s3-branch-deploy": "^1.x"
   }
 }

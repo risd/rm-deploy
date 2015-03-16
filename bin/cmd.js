@@ -5,7 +5,7 @@ var Deploy = require('wh-s3-branch-deploy');
 
 var args = parseArgs(process.argv.slice(2));
 
-var defaultConfPath = '~/.risdmedia/aws.json';
+var defaultConfPath = getUserHome() + '/.risdmedia/aws.json';
 var defaultWHConfPath = '.firebase.conf';
 var defaultAwsKeyInConf = 'aws';
 
@@ -116,3 +116,11 @@ if (!args.prefix) {
 
 
 Deploy(opts);
+
+
+function getUserHome() {
+  return process.env[
+            (process.platform == 'win32') ?
+            'USERPROFILE' : 'HOME'
+        ];
+}

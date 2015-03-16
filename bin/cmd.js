@@ -5,26 +5,12 @@ var Deploy = require('wh-s3-branch-deploy');
 
 var args = parseArgs(process.argv.slice(2));
 
-var defaultConfPath = '.risdmedia.conf';
+var defaultConfPath = getUserHome() + '/.risdmedia/aws.json';
 var defaultWHConfPath = '.firebase.conf';
 var defaultAwsKeyInConf = 'aws';
-var template = fs.readFileSync(
-                        __dirname +
-                        '/template-risdmedia.json')
-                .toString();
 
-var printing = false;
-if (args.template) {
-    printing = true;
-    var m = [
-        '',
-        'Configuration template:',
-        '',
-        '\t' + template.replace(/\n/g, '\n\t'),
-        ''
-    ];
-    console.log(m.join('\n'));
-}
+var opts = {};
+
 
 if (args.help) {
     printing = true;
@@ -32,62 +18,52 @@ if (args.help) {
                   .toString()
                   .replace(/```/g, '\n');
     console.log(usage);
-}
-
-if (printing) {
     return;
 }
 
+
 var confPath;
 if (args.conf) {
-    confPath = args.conf;
+    confPath = process.cwd() + args.conf;
 }
 else {
     confPath = defaultConfPath;
 }
 
 try {
-    args.conf = JSON.parse(
-                    fs.readFileSync(process.cwd() +
-                        '/' +
-                        confPath)
-                    );
+    opts.aws = JSON.parse(fs.readFileSync(confPath));
 } catch (err) {
     var e = [
         'A configuration file is required.',
-        'Tried finding one named `.risdmedia.conf`',
-        'at the path where this was executed.',
-        'Either make that file, or explicitly define',
-        'a relative path.',
-        'This file must be valid JSON.',
+        'Tried finding one here:',
         '',
-        '\trm deploy --conf=file.json',
+        '\t' + confPath,
+        '',
+        'Explicitly pass in a file: ',
+        '',
+        '\trm-deploy --conf=aws.json',
+        '',
+        'Or save one to the default ',
+        'location:',
+        '',
+        '\t~/.risdmedia/aws.json',
         ''
     ];
     console.log(e.join('\n'));
     return;
 }
 
-
-if ('awsKeyInConf' in args) {
-    args.aws = args.conf[args.awsKeyInConf];
-} else {
-    // Try the looking at the `aws` key by default
-    // if one is not defined
-    args.aws = args.conf[defaultAwsKeyInConf];
-}
-
 // Ensure you have aws credentials.
-if (('key'    in args.aws) &&
-    ('secret' in args.aws)) {
+if (('key'    in opts.aws) &&
+    ('secret' in opts.aws)) {
     // Got'em;
 } else {
     var e = [
         'The configuration file referenced does not',
         'contain aws credentials. Your conf file should',
-        'follow this template:',
-        '',
-        '\t' + template.replace(/\n/g, '\n\t'),
+        'be JSON, and have two keys. `key` & `secret`.',
+        '`key` is your public aws key, `secret` is',
+        'secret key.',
         ''
     ];
     console.log(e.join('\n'));
@@ -100,7 +76,8 @@ if (!args.bucket) {
         'Deploying to bucket named based on \n' +
         'the current git branch.\n');
 } else {
-    console.log('Deploying to bucket named: ' + args.bucket);
+    opts.bucket = args.bucket;
+    console.log('Deploying to bucket named: ' + opts.bucket);
 }
 
 if (!args.prefix) {
@@ -109,7 +86,7 @@ if (!args.prefix) {
         // Try the .firebase.conf file,
         // webhook's default configuration
         // file
-        args.prefix =
+        opts.prefix =
             JSON.parse(
                 fs.readFileSync(
                     process.cwd() +
@@ -121,23 +98,29 @@ if (!args.prefix) {
     }
     catch (err) {
         var e = [
-            'A prefix is required. This can be set',
-            'in the configuration file using the key',
-            '`prefix`.',
+            'A prefix is required. This can inferred',
+            'from the WebHook conf file, `.firebase.conf`,',
+            'if this is run from the root of the WebHook',
+            'project. Otherwise, pass one in explicitly.',
             '',
-            '\t' + template.replace(/\n/g, '\n\t'),
-            '',
-            'Or can be passed into this',
-            'command',
-            '',
-            '\trm deploy --prefix=myPrefix',
+            '\trm-deploy --prefix=myPrefix',
             '',
             ''
         ];
         console.log(e.join('\n'));
         return;
     }
+} else {
+    opts.prefix = args.prefix;
 }
 
 
-Deploy(args);
+Deploy(opts);
+
+
+function getUserHome() {
+  return process.env[
+            (process.platform == 'win32') ?
+            'USERPROFILE' : 'HOME'
+        ];
+}

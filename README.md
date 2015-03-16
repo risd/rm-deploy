@@ -12,7 +12,7 @@ Or globally.
 
 ### Usage
 
-With defaults:
+Always run from the root of a WebHook project.
 
 `rm-deploy`
 

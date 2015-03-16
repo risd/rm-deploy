@@ -1,6 +1,6 @@
 # RISD Media Deploy
 
-Command line interface to `wh-s3-branch-deploy` with configuration defaults for the Media Group.
+Command line interface to [`wh-s3-branch-deploy`](https://github.com/risd/wh-s3-branch-deploy) with configuration defaults for the Media Group.
 
 ### Install
 

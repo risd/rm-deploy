@@ -1,5 +1,5 @@
 {
-  "name": "wh-s3-branch-deploy",
+  "name": "rm-deploy",
   "version": "1.0.0",
   "description": "Wrapper around WebHook Build/Deploy.",
   "main": "index.js",
@@ -28,6 +28,10 @@
   },
   "homepage": "https://github.com/risd/wh-s3-branch-deploy",
   "dependencies": {
-    "minimist": "^1.1.1"
+    "minimist": "^1.1.1",
+    "wh-s3-branch-deploy": "risd/wh-s3-branch-deploy"
+  },
+  "peerDependencies": {
+    "wh": "^1.x"
   }
 }

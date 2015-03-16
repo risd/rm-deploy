@@ -9,6 +9,8 @@ var defaultConfPath = '~/.risdmedia/aws.json';
 var defaultWHConfPath = '.firebase.conf';
 var defaultAwsKeyInConf = 'aws';
 
+var opts = {};
+
 
 if (args.help) {
     printing = true;
@@ -29,7 +31,7 @@ else {
 }
 
 try {
-    args.aws = JSON.parse(fs.readFileSync(confPath));
+    opts.aws = JSON.parse(fs.readFileSync(confPath));
 } catch (err) {
     var e = [
         'A configuration file is required.',
@@ -52,8 +54,8 @@ try {
 }
 
 // Ensure you have aws credentials.
-if (('key'    in args.aws) &&
-    ('secret' in args.aws)) {
+if (('key'    in opts.aws) &&
+    ('secret' in opts.aws)) {
     // Got'em;
 } else {
     var e = [
@@ -74,7 +76,8 @@ if (!args.bucket) {
         'Deploying to bucket named based on \n' +
         'the current git branch.\n');
 } else {
-    console.log('Deploying to bucket named: ' + args.bucket);
+    opts.bucket = args.bucket;
+    console.log('Deploying to bucket named: ' + opts.bucket);
 }
 
 if (!args.prefix) {
@@ -83,7 +86,7 @@ if (!args.prefix) {
         // Try the .firebase.conf file,
         // webhook's default configuration
         // file
-        args.prefix =
+        opts.prefix =
             JSON.parse(
                 fs.readFileSync(
                     process.cwd() +
@@ -107,7 +110,9 @@ if (!args.prefix) {
         console.log(e.join('\n'));
         return;
     }
+} else {
+    opts.prefix = args.prefix;
 }
 
 
-Deploy(args);
+Deploy(opts);

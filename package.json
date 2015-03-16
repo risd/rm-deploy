@@ -1,0 +1,33 @@
+{
+  "name": "wh-s3-branch-deploy",
+  "version": "1.0.0",
+  "description": "Wrapper around WebHook Build/Deploy.",
+  "main": "index.js",
+  "bin": {
+    "rm-deploy": "bin/cmd.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/risd/wh-s3-branch-deploy.git"
+  },
+  "keywords": [
+    "webhook",
+    "s3",
+    "deploy"
+  ],
+  "author": {
+    "name": "Ruben Rodriguez",
+    "url": "http://rubenrodriguez.me"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/risd/wh-s3-branch-deploy/issues"
+  },
+  "homepage": "https://github.com/risd/wh-s3-branch-deploy",
+  "dependencies": {
+    "minimist": "^1.1.1"
+  }
+}

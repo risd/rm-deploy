@@ -5,14 +5,25 @@ rm-deplpoy
     --bucket = 'BucketName'
     --help
 
-`aws`    Default is `~/.risdmedia/aws.json`.
+`aws`    Path to JSON file with AWS credentials.
+		 Default is `~/.risdmedia/aws.json`.
          Expects two keys: `key` & `secret`.
          Required.
 
-`prefix` Default is the `siteName` key in
+`prefix` Prefix to use on the S3 URL.
+		 Default is the `siteName` key in
          WebHook's per project configuration
-         file, `.firebase.conf`. Looks for this
-         relative to Required.
+         file, `.firebase.conf`. Expects this
+         file to be at the same path that the
+         command is executed.
+         Required.
 
-`bucket` Default is the current git branch. Optional.
+`bucket` The name of the bucket used to store &
+		 serve your website.
+		 Default is the current git branch.
+		 Optional.
+
+
+If deploying to S3, the URL will look like:
+http://<prefix>-<bucket>.s3.amazonaws.com
 ```

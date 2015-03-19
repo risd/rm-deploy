@@ -1,5 +1,5 @@
 ```
-rm-deplpoy
+rm-deploy
     --aws    = path/to/aws.json
     --prefix = 'BucketPrefix'
     --bucket = 'BucketName'
